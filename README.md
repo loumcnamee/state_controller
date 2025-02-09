@@ -1,17 +1,19 @@
 # State Controller Example
-A C++ project thta implements the state pattern to controll an HVAC plant
+A C++ project thar implements the state pattern to control an HVAC plant for a house.
+The state pattern impplemnted here uses modern C++ (17) feaures to reduce single responsibility and Open closed principle violations of the original pattern. 
+Inspired by https://vishalchovatiya.com/posts//state-design-pattern-in-modern-cpp/
 
-This repository contains a template for a C++ application using CMake for the build system.
-It includes support to build a static library containing classes, a google test project that test the library and an application that uses the library classes.
+This repository contains a C++ application using CMake for the build system.
+It includes support to build a static library containing business logic classes, a google test project that test the library and an application that uses the library classes and provides a Qt GUI.
 
 ## Organization
 
 ### Folder structure
 ```
 ├ .vscode           # contains files to support integration with VS Code
-├ aLib              # contains C++ classes built into the library aLib
-├ aTest             # contains unit tests of classes in aLib
-├ theApp            # main entry point using the classes in aLib
+├ libController     # contains C++ classes built into the Controller library 
+├ aTest             # contains unit tests of classes in teh ocntroller library
+├ theApp            # Qt single window application
 ├ CMakeLists.txt    # main Cmake project file that references CMake projects in aLib, aTest, and theApp folders
 ```
 ## Important Files
@@ -19,17 +21,14 @@ It includes support to build a static library containing classes, a google test 
 
 ## Toolchain
 
-You will need the following tools to build this project
-* an operating system to run CMake, the builder, compiler and linker
-** options are
-* CMake
-* a build tool like Make, Ninja, NMake, etc
-* a C++ compiler and linker
-* (optional) an integrated development environment e.g. VS Code, CLion, CodeBlocks, MS Visual Studio
-
+This project was built using a CMake/gcc toolchain in WSL: Ubuntu on Windows
+* gcc - gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* g++ - g++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* CMake - cmake version 3.28.3
+* 
 
 ## Helpful References
- https://cmake.org/cmake/help/latest/
- https://code.visualstudio.com/docs/cpp/cmake-quickstart
- https://google.github.io/googletest/
+ * https://cmake.org/cmake/help/latest/
+ * https://code.visualstudio.com/docs/cpp/cmake-quickstart
+ * https://google.github.io/googletest/
  
