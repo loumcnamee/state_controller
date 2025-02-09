@@ -2,8 +2,13 @@ cmake_minimum_required(VERSION 3.14)
 
 project(cmake_template VERSION 0.1.0 LANGUAGES C CXX)
 
+#add_compile_options("$<$<COMPILE_LANGUAGE:CXX>: -DGLIBCXX_ASSERTIONS>")
 
-add_subdirectory(aLib)
+# -Ofast;-DNDEBUG;-std=c++20;-march=native;-fpic;-ftree-vectorize;
+
+find_package(Qt6 COMPONENTS Charts REQUIRED)
+
+add_subdirectory(libController)
 add_subdirectory(aTest)
 add_subdirectory(theApp)
 
