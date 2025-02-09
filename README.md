@@ -1,5 +1,5 @@
-# cpp_cmake_template
-A template for C++ projects using CMAKE
+# State Controller Example
+A C++ project thta implements the state pattern to controll an HVAC plant
 
 This repository contains a template for a C++ application using CMake for the build system.
 It includes support to build a static library containing classes, a google test project that test the library and an application that uses the library classes.
