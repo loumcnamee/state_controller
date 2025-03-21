@@ -12,6 +12,7 @@
 #include "CoolingState.h"
 #include "IdleState.h"
 #include "Event.h"
+#include "DiurnalSurfaceModel.h"
 
 using namespace std;
 using State = variant<IdleState, HeatingState, CoolingState>;
@@ -67,6 +68,7 @@ class Controller {
 private:
     StateVariant m_curr_state = IdleState{};
     std::unique_ptr<HomeHeatModel> model_;
+    std::unique_ptr<DiurnalSurfaceTemperatureModel> surfaceTempModel_;
 
     void dispatch(const EventVariant &Event);
 
@@ -84,7 +86,10 @@ public:
     const float getInputPower() const { return model_->getInputPower(); }
     const float getFloorArea() const { return model_->getFloorArea(); }
     void setOutsideTemperature(float temp) { model_->setOutisdeTemperature(temp); }
-    
+    void updateModel(float dt, float time_of_day);
+
+
+
     
 };
 
