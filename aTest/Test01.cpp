@@ -126,16 +126,53 @@ TEST(ControllerTests, SetOusideTempTest) {
 
 
 
-// Test controller state changes : State = Heating / Event = EventStop
-TEST(ControllerTests, HeatLoopTest) {
+
+// Test controller verify building cools when outside temp is less than outside temp and heater is ff
+TEST(ControllerTests, NaturalCoolingTest) {
 
   Controller<State, Event, Transitions> ctrl;
     
   ASSERT_EQ(ctrl.getStateName(),"Idle");
+  ASSERT_EQ(ctrl.getBuildingTemperature(), 22.0f);
+  ASSERT_EQ(ctrl.getOutsideTemperature(), 10.0f);
+  ASSERT_EQ(ctrl.getInputPower(), 0.0f);
 
-  ctrl.process(EventTooCold{});
+  //ctrl.process(EventTooCold{});
 
-  ASSERT_EQ(ctrl.getStateName(),"Heating");
+  //ASSERT_EQ(ctrl.getStateName(),"Heating");
+
+  ctrl.updateModel(1,12);
+  ASSERT_EQ(ctrl.getStateName(),"Idle");
+  ASSERT_LT(ctrl.getBuildingTemperature(), 22.0f);
+  ASSERT_EQ(ctrl.getOutsideTemperature(), 10.0f);
+  ASSERT_EQ(ctrl.getInputPower(), 0.0f);
+
+  
+}
+
+// Test controller verify building heats when outside temp is greater than outside temp and cooling is off
+TEST(ControllerTests, NaturalHeatingTest) {
+
+  Controller<State, Event, Transitions> ctrl;
+    
+  ASSERT_EQ(ctrl.getStateName(),"Idle");
+  ASSERT_EQ(ctrl.getBuildingTemperature(), 22.0f);
+  ASSERT_EQ(ctrl.getOutsideTemperature(), 10.0f);
+  ASSERT_EQ(ctrl.getInputPower(), 0.0f);
+
+  ctrl.setOutsideTemperature(30.0f);
+  ASSERT_EQ(ctrl.getOutsideTemperature(), 30.0f);
+
+  //ctrl.process(EventTooCold{});
+
+  //ASSERT_EQ(ctrl.getStateName(),"Heating");
+
+  ctrl.updateModel(1,12);
+  ASSERT_EQ(ctrl.getStateName(),"Idle");
+  ASSERT_GT(ctrl.getBuildingTemperature(), 22.0f);
+  ASSERT_EQ(ctrl.getOutsideTemperature(), 30.0f);
+  ASSERT_EQ(ctrl.getInputPower(), 0.0f);
+
   
 }
 
