@@ -32,7 +32,7 @@ endif()
 find_package(Qt6 COMPONENTS REQUIRED Core Gui Widgets Charts)
 
 # Tell CMake to create the helloworld executable
-add_executable(theApp theApp.cpp MainWindow.cpp)
+add_executable(theApp theApp.cpp MainWindow.cpp ControlSlider.cpp)
 target_compile_features(theApp PRIVATE cxx_std_17)
 
 # Add the Qt5 Widgets for linking
