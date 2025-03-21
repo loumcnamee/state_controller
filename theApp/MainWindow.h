@@ -9,8 +9,11 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QApplication>
+//#include <QtWidgets/QSlider>
+#include "ControlSlider.h"
 #include <QtWidgets/QMenuBar>
 #include <QtCharts/QChartView>
+#include <QtCharts/QPolarChart>
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QDateTimeAxis>
 #include <QtCharts/QValueAxis>
@@ -37,6 +40,8 @@ public:
 public slots:
     void storeContent();
 private:
+    float time_ ;
+    QSize buttonsize = QSize(100, 100);
     Controller<State, Event, Transitions> ctrl;
     QPushButton *m_button;
     QWidget *centralwidget;
@@ -44,25 +49,36 @@ private:
     QWidget *verticalLayoutWidget;
     QHBoxLayout *horizontalLayout;
     QVBoxLayout *verticalLayout;
-    QPushButton *pushButton_5;
-    QPushButton *pushButton_3;
+    QPushButton *pushButtonHeat_;
+    QPushButton *pushButton_IDLE;
     QPushButton *pushButton_1;
     QPushButton *pushButton_6;
     QSpacerItem *verticalSpacer;
     QSpacerItem *horizontalSpacer;
-    QPushButton *pushButton_4;
+    QPushButton *pushButton_Cool;
     QPushButton *pushButton_2;
     QMenuBar *menubar;
     QStatusBar *statusbar;
     QChartView *m_chartView;
-    QChart *m_chart;
-    QLineSeries *m_series;
+    QPolarChart *m_chart;
+    QLineSeries *m_inTempData;
+    QLineSeries *m_outTempData;
     QTimer* m_ChartUpdateTimer;
+    ControlSlider* m_ModeSelector;
 
     void setupChart();
-    void addDataPoint(qreal time, qreal value);
+    void setupModeSelector();
+    void addDataPoint(qreal time, qreal inTemp, qreal outTemp);
 public slots:
     void updateChart();
+    void setIdleState();
+    void setHeatingState();
+    void setCoolingState();
+    void heatButtonClicked();
+    void idleButtonClicked();
+    void coolButtonClicked();
+
+
 };
 
 #endif // MAINWINDOW_H
