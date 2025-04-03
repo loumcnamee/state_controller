@@ -51,7 +51,7 @@ private:
     QVBoxLayout *verticalLayout;
     QPushButton *pushButtonHeat_;
     QPushButton *pushButton_IDLE;
-    QPushButton *pushButton_1;
+    QPushButton *pushButton_ClearData;
     QPushButton *pushButton_6;
     QSpacerItem *verticalSpacer;
     QSpacerItem *horizontalSpacer;
@@ -69,6 +69,7 @@ private:
     void setupChart();
     void setupModeSelector();
     void addDataPoint(qreal time, qreal inTemp, qreal outTemp);
+    void clearChartData();  // Add this line
 public slots:
     void updateChart();
     void setIdleState();

@@ -85,7 +85,7 @@ public:
     const float getOutsideTemperature() const { return model_->getOutsideTemperature(); }
     const float getInputPower() const { return model_->getInputPower(); }
     const float getFloorArea() const { return model_->getFloorArea(); }
-    void setOutsideTemperature(float temp) { model_->setOutisdeTemperature(temp); }
+    void setOutsideTemperature(float mean, float range);
     void updateModel(float dt, float time_of_day);
 
 

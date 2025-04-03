@@ -1,15 +1,53 @@
 #include "DiurnalSurfaceModel.h"
-
+#include <system_error>
 #include <cmath>
 
 
 DiurnalSurfaceTemperatureModel::DiurnalSurfaceTemperatureModel() {
-    
+    time_of_day = 0.0f; // Default time of day
+    latitude = 0.0f; // Default latitude
+    day_of_year = 1; // Default day of the year
+     daily_mean_temp = 10.0f;
+     daily_temp_range = 10.0f;
    
 }
 
 
-float DiurnalSurfaceTemperatureModel::compute_surface_temperature(float tod, float daily_mean_temp, float daily_temp_range)
+void DiurnalSurfaceTemperatureModel::setTimeOfDayHours(float tod) {
+    if (tod < 0) {
+        throw std::invalid_argument("Time of day cannot be negative");
+    }
+    // Ensure time stays within 24-hour range using modulo 
+    time_of_day = fmod(tod, 24.0f);
+    return;
+}
+
+void DiurnalSurfaceTemperatureModel::setOutsideTemperature(float meanTemp, float tempRange) {\
+
+    daily_mean_temp = meanTemp;
+    daily_temp_range = tempRange;
+    return;
+}
+
+
+void DiurnalSurfaceTemperatureModel::setLatitude(float lat) {
+    if (lat < -90.0f || lat > 90.0f) {
+        throw std::invalid_argument("Latitude must be between -90 and 90 degrees");
+    }
+    latitude = std::max(-90.0f, std::min(90.0f, lat));
+    return;
+}
+
+void DiurnalSurfaceTemperatureModel::setDayOfYear(int day) {
+    if (day <= 0) {
+        throw std::invalid_argument("Day must be a positive integer");
+    }
+    
+    day_of_year = (day % 365);
+    return;
+}
+
+float DiurnalSurfaceTemperatureModel::compute_surface_temperature(float tod)
 {
      
     // ̂Temp(t) = = A0 +A1*X1 + a1*X2*COS(pi*tod/12)+b1*SIN(pi*tod/12)+a2*X2*COS(pi*tod/6)+b2*X2*SIN(pi*tod/6)

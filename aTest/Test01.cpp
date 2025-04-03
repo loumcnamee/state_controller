@@ -98,10 +98,9 @@ TEST(ControllerTests, TempDataTest) {
   ASSERT_EQ(ctrl.getStateName(),"Idle");
 
   ASSERT_EQ(ctrl.getBuildingTemperature(), 22.0f);
-  ASSERT_EQ(ctrl.getOutsideTemperature(), 10.0f);
+  ASSERT_EQ(ctrl.getOutsideTemperature(), 0.0f);
   ASSERT_EQ(ctrl.getInputPower(), 0.0f);
   ASSERT_EQ(ctrl.getFloorArea(), 100.0f); 
-     
   
 }
 
@@ -111,21 +110,14 @@ TEST(ControllerTests, SetOusideTempTest) {
   Controller<State, Event, Transitions> ctrl;
     
   ASSERT_EQ(ctrl.getStateName(),"Idle");
-
   
-  ASSERT_EQ(ctrl.getOutsideTemperature(), 10.0f);
+  ASSERT_EQ(ctrl.getOutsideTemperature(), 0.0f);
   
-  ctrl.setOutsideTemperature(101.5f);
+  ctrl.setOutsideTemperature(101.5f, 0.0f);
 
   ASSERT_EQ(ctrl.getOutsideTemperature(), 101.5f);
-     
   
 }
-
-
-
-
-
 
 // Test controller verify building cools when outside temp is less than outside temp and heater is ff
 TEST(ControllerTests, NaturalCoolingTest) {
@@ -134,19 +126,18 @@ TEST(ControllerTests, NaturalCoolingTest) {
     
   ASSERT_EQ(ctrl.getStateName(),"Idle");
   ASSERT_EQ(ctrl.getBuildingTemperature(), 22.0f);
-  ASSERT_EQ(ctrl.getOutsideTemperature(), 10.0f);
+  ASSERT_EQ(ctrl.getOutsideTemperature(), 0.0f);
   ASSERT_EQ(ctrl.getInputPower(), 0.0f);
 
   //ctrl.process(EventTooCold{});
 
   //ASSERT_EQ(ctrl.getStateName(),"Heating");
 
-  ctrl.updateModel(1,12);
+  ctrl.updateModel(1,0);
   ASSERT_EQ(ctrl.getStateName(),"Idle");
   ASSERT_LT(ctrl.getBuildingTemperature(), 22.0f);
-  ASSERT_EQ(ctrl.getOutsideTemperature(), 10.0f);
+  
   ASSERT_EQ(ctrl.getInputPower(), 0.0f);
-
   
 }
 
@@ -154,23 +145,20 @@ TEST(ControllerTests, NaturalCoolingTest) {
 TEST(ControllerTests, NaturalHeatingTest) {
 
   Controller<State, Event, Transitions> ctrl;
-    
+      
   ASSERT_EQ(ctrl.getStateName(),"Idle");
   ASSERT_EQ(ctrl.getBuildingTemperature(), 22.0f);
-  ASSERT_EQ(ctrl.getOutsideTemperature(), 10.0f);
+  ASSERT_EQ(ctrl.getOutsideTemperature(), 0.0f);
   ASSERT_EQ(ctrl.getInputPower(), 0.0f);
 
-  ctrl.setOutsideTemperature(30.0f);
+  ctrl.setOutsideTemperature(30.0f, 0.0f);
   ASSERT_EQ(ctrl.getOutsideTemperature(), 30.0f);
 
-  //ctrl.process(EventTooCold{});
-
-  //ASSERT_EQ(ctrl.getStateName(),"Heating");
-
-  ctrl.updateModel(1,12);
+    
+  ctrl.updateModel(60*60*12,0.0f);
   ASSERT_EQ(ctrl.getStateName(),"Idle");
   ASSERT_GT(ctrl.getBuildingTemperature(), 22.0f);
-  ASSERT_EQ(ctrl.getOutsideTemperature(), 30.0f);
+  
   ASSERT_EQ(ctrl.getInputPower(), 0.0f);
 
   

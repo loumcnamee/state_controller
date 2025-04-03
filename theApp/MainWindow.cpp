@@ -89,11 +89,18 @@ void MainWindow::setupUi(QMainWindow *MainWindow)
         horizontalLayout->addItem(horizontalSpacer);
         
 
-        pushButton_Cool = new QPushButton();
-        pushButton_Cool->setObjectName(QString::fromUtf8("pushButton_Cool"));
-        pushButton_Cool->setGeometry(QRect(QPoint(100, 100), QSize(200, 50)));
-        pushButton_Cool->setSizePolicy(btnsizePolicy);
+        pushButton_Cool = new QPushButton(verticalLayoutWidget);
+        pushButton_Cool->setObjectName("pushButton_Cool");
+        pushButton_Cool->setMinimumSize(buttonsize);
+        pushButton_Cool->setMaximumSize(buttonsize);
+        pushButton_Cool->setText("Cool");
         verticalLayout->addWidget(pushButton_Cool);
+
+        pushButton_ClearData = new QPushButton();
+        pushButton_ClearData->setObjectName(QString::fromUtf8("pushButton_ClearData"));
+        pushButton_ClearData->setText(QString::fromUtf8("Clear Data"));
+        pushButton_ClearData->setSizePolicy(btnsizePolicy);
+        verticalLayout->addWidget(pushButton_ClearData);
 
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
         verticalLayout->addItem(verticalSpacer);
@@ -113,7 +120,8 @@ void MainWindow::setupUi(QMainWindow *MainWindow)
         connect(m_button, &QPushButton::clicked, this, &MainWindow::storeContent);
         connect(pushButtonHeat_, &QPushButton::clicked, this, &MainWindow::heatButtonClicked);
         connect(pushButton_IDLE, &QPushButton::clicked, this, &MainWindow::idleButtonClicked);
-
+        connect(pushButton_ClearData, &QPushButton::clicked, this, &MainWindow::clearChartData);
+        connect(pushButton_Cool, &QPushButton::clicked, this, &MainWindow::coolButtonClicked);
 
         // Set up the chart update timer
         m_ChartUpdateTimer = new QTimer(this);
@@ -122,7 +130,7 @@ void MainWindow::setupUi(QMainWindow *MainWindow)
         connect(m_ChartUpdateTimer, &QTimer::timeout, this, QOverload<>::of(&MainWindow::updateChart));
         
         QMetaObject::connectSlotsByName(MainWindow);
-        ctrl.setOutsideTemperature(0.0f);
+        ctrl.setOutsideTemperature(0.0f, 20.0f);
         m_ChartUpdateTimer->start();
         
         retranslateUi(MainWindow);
@@ -147,7 +155,7 @@ void MainWindow::storeContent()
         
         // pushButtonHeat_->setText(QCoreApplication::translate("MainWindow", "PB 5", nullptr));
         // pushButton_IDLE->setText(QCoreApplication::translate("MainWindow", "PB 3", nullptr));
-        // pushButton_1->setText(QCoreApplication::translate("MainWindow", "PB 1", nullptr));
+        // pushButton_ClearData->setText(QCoreApplication::translate("MainWindow", "PB 1", nullptr));
         // pushButton_6->setText(QCoreApplication::translate("MainWindow", "PB 6", nullptr));
         // pushButton_Cool->setText(QCoreApplication::translate("MainWindow", "PB 4", nullptr));
         // pushButton_2->setText(QCoreApplication::translate("MainWindow", "PB 2", nullptr));
@@ -232,27 +240,12 @@ void MainWindow::addDataPoint(qreal time, qreal inTemp, qreal outTemp)
 {
     m_inTempData->append(time, inTemp);
     m_outTempData->append(time, outTemp);
-    
+}
 
-    
-//     // Auto-scale Y axis
-    
-//     QValueAxis *axisY = qobject_cast<QValueAxis*>(m_chart->axes(Qt::Vertical).first());
-//     qreal minY = -40.0f; //m_series->at(0).y();
-//     qreal maxY = +40.f; // m_series->at(0).y();
-//     axisY->setRange(minY, maxY);
-    
-    // if (axisY) {
-    //     qreal minY = -40.0f; //m_series->at(0).y();
-    //     qreal maxY = +40.f; // m_series->at(0).y();
-    //     for (int i = 1; i < m_series->count(); ++i) {
-    //         minY = qMin(minY, m_series->at(i).y());
-    //         maxY = qMax(maxY, m_series->at(i).y());
-    //     }
-    //     axisY->setRange(minY, maxY);
-    
-    // }
-    
+void MainWindow::clearChartData()
+{
+    m_inTempData->clear();
+    m_outTempData->clear();
 }
 
 void MainWindow::updateChart()
@@ -283,7 +276,6 @@ void MainWindow::idleButtonClicked() {
 void MainWindow::coolButtonClicked() {
     ctrl.process(EventTooHot{});
 }
-
 
 void MainWindow::setupModeSelector() {
         m_ModeSelector = new ControlSlider(verticalLayoutWidget);

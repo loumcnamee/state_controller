@@ -37,7 +37,15 @@ void Controller<StateVariant, EventVariant, Transitions>::dispatch(const EventVa
 template <typename StateVariant, typename EventVariant, typename Transitions>
 void Controller<StateVariant, EventVariant, Transitions>::updateModel(float dt, float time_of_day) {
     
-    float outside_temp = surfaceTempModel_->compute_surface_temperature(time_of_day, 8.0f, 20.0f);
+    float outside_temp = surfaceTempModel_->compute_surface_temperature(time_of_day);
     model_->setOutisdeTemperature(outside_temp);
     model_->compute_temperature(dt);
+    return;
 }   
+
+template <typename StateVariant, typename EventVariant, typename Transitions>
+void Controller<StateVariant, EventVariant, Transitions>::setOutsideTemperature(float mean, float range) {
+    surfaceTempModel_->setOutsideTemperature(mean, range);
+    model_->setOutisdeTemperature(mean);
+    return;
+}
