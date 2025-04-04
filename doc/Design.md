@@ -19,10 +19,10 @@ This application simulates thermal control of a simple building using the libCon
 ## Architecture
 ```mermaid
 graph TD
-    A[Qt UI] --> B[State Manager]
-    B --> C[libController]
-    C --> D[Thermal Simulation]
-    D --> B
+    A[MaintWindow] --> B[HVACController]
+    B --> C[BuildingTemperature Model]
+    B --> D[Diurnal Surface Air Temperature Model]
+    B --> E[State machine]
 ```
 ## State Machine
 The state machine diagram illustrates the interaction control flow and state transitions between different user-system interactions.
@@ -55,6 +55,7 @@ The interface layout shows the main components and their arrangement within the 
 - Error handling and alerts
 
 ## Sequence Diagram
+> **Note:** This sequence diagram was generated using GitHub Copilot with the prompt "generate a sequence diagram of the main thread of execution of this application starting with MainWindow::setupUi(QMainWindow *MainWindow)"
 ```mermaid
 sequenceDiagram
     participant UI as MainWindow
