@@ -1,5 +1,5 @@
 # State Controller Example
-A C++ project thar implements the state pattern to control an HVAC plant for a house.
+A C++ project thar implements the state pattern to control an [HVAC](https://en.wikipedia.org/wiki/Heating,_ventilation,_and_air_conditioning)  plant for a house.
 The state pattern impplemnted here uses modern C++ (17) feaures to reduce single responsibility and Open closed principle violations of the original pattern. 
 Inspired by https://vishalchovatiya.com/posts//state-design-pattern-in-modern-cpp/
 
@@ -25,7 +25,23 @@ This project was built using a CMake/gcc toolchain in WSL: Ubuntu on Windows
 * gcc - gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
 * g++ - g++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
 * CMake - cmake version 3.28.3
-* 
+
+
+## Design
+See [Design Documentation](/doc/Design.md) for details on the implementation.
+
+## Dependencies
+- Qt Framework
+- C++ Standard Library
+
+## Technical Requirements
+- C++17 or later
+- Qt 5.15 or later
+- CMake
+
+## Disclosure
+The author (Lou McNamee) used CoPilot to generate some of the code, tests and documentation 
+
 
 ## Helpful References
  * https://cmake.org/cmake/help/latest/

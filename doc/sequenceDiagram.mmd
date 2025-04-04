@@ -1,0 +1,28 @@
+sequenceDiagram
+    participant UI as MainWindow
+    participant SM as StateManager
+    participant HC as HomeController
+    participant HM as HomeHeatModel
+    participant DM as DiurnalModel
+
+    UI->>UI: setupUi()
+    UI->>SM: create()
+    SM->>HC: initialize()
+    HC->>HM: create()
+    HC->>DM: create()
+    
+    activate SM
+    SM->>HC: startSimulation()
+    activate HC
+    
+    loop Every Timer Tick
+        HC->>DM: getExternalTemp()
+        DM-->>HC: temperature
+        HC->>HM: updateTemp(external)
+        HM-->>HC: internalTemp
+        HC-->>SM: stateUpdate
+        SM-->>UI: updateDisplay
+    end
+    
+    deactivate HC
+    deactivate SM
