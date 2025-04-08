@@ -72,5 +72,35 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp",
         "variant": "cpp"
-    }
+    },
+        "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+        "C_Cpp.default.intelliSenseMode": "clang-x64",  
+        "C_Cpp.default.cppStandard": "c++20",
+        "C_Cpp.default.cStandard": "c11",
+        "C_Cpp.codeAnalysis.clangTidy.checks.enabled": [
+            "bugprone-*",
+            "clang-analyzer-*",
+            "cppcoreguidelines-*",
+            "google-*",
+            "readability-*"
+        ],
+    "C_Cpp.codeAnalysis.exclude": {
+        "**/build/**": true,
+        "**/CMakeFiles/**": true,
+        "**/CMakeCache.txt": true,
+        "**/cmake_install.cmake": true,
+        "**/Makefile": true,
+        "**/*.o": true,
+        "**/*.so": true,
+        "**/*.a": true,
+        "**/*.dSYM/**": true,
+        "**/gtest/**": true
+    //     "**/googletest/**": true,
+    //     "**/googletest-build/**": true,
+    //     "**/googletest-install/**": true,
+    //     "**/googletest-src/**": true,
+    //     "**/googletest-src-build/**": true
+    },
+
+    
 }
