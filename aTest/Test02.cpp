@@ -7,8 +7,8 @@ protected:
 
     void SetUp() override {
         // Default test setup
-        model.setTimeOfDayHours(12.0);
-        model.setLatitude(45.0);
+        model.setTimeOfDayHours(12.0F);
+        model.setLatitude(45.0F);
         model.setDayOfYear(182);
     }
 };
@@ -22,12 +22,15 @@ TEST_F(DiurnalSurfaceTemperatureModelTest, DefaultConstructor) {
 
 TEST_F(DiurnalSurfaceTemperatureModelTest, SettersAndGetters) {
     DiurnalSurfaceTemperatureModel model;
-    model.setTimeOfDayHours(6.0f);
-    model.setLatitude(30.0f);
-    model.setDayOfYear(90.0f);
+    const float expectedTimeOfDay = 6.0F;
+    const float expectedLatitude = 30.0F;
+    const int expectedDayOfYear = 90;
+    model.setTimeOfDayHours(expectedTimeOfDay);
+    model.setLatitude(expectedLatitude);
+    model.setDayOfYear(expectedDayOfYear);
 
-    EXPECT_DOUBLE_EQ(6.0f, model.getTimeOfDayHours());
-    EXPECT_DOUBLE_EQ(30.0, model.getLatitude());
+    EXPECT_DOUBLE_EQ(6.0F, model.getTimeOfDayHours());
+    EXPECT_DOUBLE_EQ(30.0F, model.getLatitude());
     EXPECT_EQ(90, model.getDayOfYear());
 }
 

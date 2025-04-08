@@ -9,8 +9,8 @@ template class Controller<std::variant<IdleState, HeatingState, CoolingState>, s
 template <typename StateVariant, typename EventVariant, typename Transitions>
 Controller<StateVariant, EventVariant, Transitions>::Controller()
 {
-    model_ = std::unique_ptr<HomeHeatModel>(new HomeHeatModel());
-    surfaceTempModel_ = std::unique_ptr<DiurnalSurfaceTemperatureModel>(new DiurnalSurfaceTemperatureModel()) ;
+    model_ = std::make_unique<HomeHeatModel>(HomeHeatModel());
+    surfaceTempModel_ = std::make_unique<DiurnalSurfaceTemperatureModel>(DiurnalSurfaceTemperatureModel()) ;
 }
 
 
@@ -24,24 +24,23 @@ std::string Controller<StateVariant, EventVariant, Transitions>::getStateName() 
 template <typename StateVariant, typename EventVariant, typename Transitions>
 void Controller<StateVariant, EventVariant, Transitions>::dispatch(const EventVariant &Event) {
     optional<StateVariant> new_state = visit(Transitions{}, m_curr_state, Event);
-    if (new_state)
+    if (new_state) {
         m_curr_state = *move(new_state);
+    }
+    // Update the model with the new state
     
     model_->setInputPower(std::visit([](auto&& state) { return state.power(); }, m_curr_state));
 }
 
 
     //template std::variant<IdleState, HeatingState, CoolingState>::name();
-
-
 template <typename StateVariant, typename EventVariant, typename Transitions>
-void Controller<StateVariant, EventVariant, Transitions>::updateModel(float dt, float time_of_day) {
-    
-    float outside_temp = surfaceTempModel_->compute_surface_temperature(time_of_day);
+void Controller<StateVariant, EventVariant, Transitions>::updateModel(float dTimeSec, timeOfDay tod) {
+    float outside_temp = surfaceTempModel_->compute_surface_temperature(static_cast<float>(tod));
     model_->setOutisdeTemperature(outside_temp);
-    model_->compute_temperature(dt);
+    model_->compute_temperature(dTimeSec);
     return;
-}   
+}
 
 template <typename StateVariant, typename EventVariant, typename Transitions>
 void Controller<StateVariant, EventVariant, Transitions>::setOutsideTemperature(float mean, float range) {

@@ -1,6 +1,9 @@
 #include <gtest/gtest.h>
 
 #include "Controller.h"
+#include "Event.h"
+#include "State.h"
+#include "HeatingState.h"
 
 
 
@@ -97,10 +100,10 @@ TEST(ControllerTests, TempDataTest) {
     
   ASSERT_EQ(ctrl.getStateName(),"Idle");
 
-  ASSERT_EQ(ctrl.getBuildingTemperature(), 22.0f);
-  ASSERT_EQ(ctrl.getOutsideTemperature(), 0.0f);
-  ASSERT_EQ(ctrl.getInputPower(), 0.0f);
-  ASSERT_EQ(ctrl.getFloorArea(), 100.0f); 
+  ASSERT_EQ(ctrl.getBuildingTemperature(), 22.0F);
+  ASSERT_EQ(ctrl.getOutsideTemperature(), 0.0F);
+  ASSERT_EQ(ctrl.getInputPower(), 0.0F);
+  ASSERT_EQ(ctrl.getFloorArea(), 100.0F); 
   
 }
 
@@ -125,19 +128,19 @@ TEST(ControllerTests, NaturalCoolingTest) {
   Controller<State, Event, Transitions> ctrl;
     
   ASSERT_EQ(ctrl.getStateName(),"Idle");
-  ASSERT_EQ(ctrl.getBuildingTemperature(), 22.0f);
-  ASSERT_EQ(ctrl.getOutsideTemperature(), 0.0f);
-  ASSERT_EQ(ctrl.getInputPower(), 0.0f);
+  ASSERT_EQ(ctrl.getBuildingTemperature(), 22.0F);
+  ASSERT_EQ(ctrl.getOutsideTemperature(), 0.0F);
+  ASSERT_EQ(ctrl.getInputPower(), 0.0F);
 
   //ctrl.process(EventTooCold{});
 
   //ASSERT_EQ(ctrl.getStateName(),"Heating");
 
-  ctrl.updateModel(1,0);
+  ctrl.updateModel(1,timeOfDay(0.0F));
   ASSERT_EQ(ctrl.getStateName(),"Idle");
-  ASSERT_LT(ctrl.getBuildingTemperature(), 22.0f);
+  ASSERT_LT(ctrl.getBuildingTemperature(), 22.0F);
   
-  ASSERT_EQ(ctrl.getInputPower(), 0.0f);
+  ASSERT_EQ(ctrl.getInputPower(), 0.0F);
   
 }
 
@@ -147,19 +150,19 @@ TEST(ControllerTests, NaturalHeatingTest) {
   Controller<State, Event, Transitions> ctrl;
       
   ASSERT_EQ(ctrl.getStateName(),"Idle");
-  ASSERT_EQ(ctrl.getBuildingTemperature(), 22.0f);
-  ASSERT_EQ(ctrl.getOutsideTemperature(), 0.0f);
-  ASSERT_EQ(ctrl.getInputPower(), 0.0f);
+  ASSERT_EQ(ctrl.getBuildingTemperature(), 22.0F);
+  ASSERT_EQ(ctrl.getOutsideTemperature(), 0.0F);
+  ASSERT_EQ(ctrl.getInputPower(), 0.0F);
 
-  ctrl.setOutsideTemperature(30.0f, 0.0f);
+  ctrl.setOutsideTemperature(30.0F, 0.0F);
   ASSERT_EQ(ctrl.getOutsideTemperature(), 30.0f);
 
     
-  ctrl.updateModel(60*60*12,0.0f);
+  ctrl.updateModel(60*60*12,timeOfDay(0.0F));
   ASSERT_EQ(ctrl.getStateName(),"Idle");
-  ASSERT_GT(ctrl.getBuildingTemperature(), 22.0f);
+  ASSERT_GT(ctrl.getBuildingTemperature(), 22.0F);
   
-  ASSERT_EQ(ctrl.getInputPower(), 0.0f);
+  ASSERT_EQ(ctrl.getInputPower(), 0.0F);
 
   
 }

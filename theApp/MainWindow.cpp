@@ -254,7 +254,7 @@ void MainWindow::updateChart()
     float time_scale = (24*60*60)/delta_t;
     // 86,400 sec in a day
     time_ += delta_t;
-    ctrl.updateModel(delta_t, time_/time_scale);
+    ctrl.updateModel(delta_t, timeOfDay(time_/time_scale));
     qreal in = ctrl.getBuildingTemperature();
     qreal out = ctrl.getOutsideTemperature();
     //qDebug() << "... update charts";

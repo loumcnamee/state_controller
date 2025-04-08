@@ -7,6 +7,7 @@
 #include <variant>
 #include <optional>
 #include <iostream>
+#include <algorithm>
 #include "HomeHeatModel.h"
 #include "HeatingState.h"
 #include "CoolingState.h"
@@ -15,6 +16,14 @@
 #include "DiurnalSurfaceModel.h"
 
 using namespace std;
+
+//template <typename StateVariant, typename EventVariant, typename Transitions>
+struct timeOfDay {
+    float hours;  // 0-24 hours
+    explicit timeOfDay(float h) : hours(std::clamp(h, 0.0f, 24.0f)) {}
+    operator float() const { return hours; }
+};
+
 using State = variant<IdleState, HeatingState, CoolingState>;
 
 /* ------------------------------- Transitions ---------------------------------------- */
@@ -81,12 +90,13 @@ public:
 
     std::string getStateName() const;
 
-    const float getBuildingTemperature() const { return model_->getBuildingTemperature(); }
-    const float getOutsideTemperature() const { return model_->getOutsideTemperature(); }
-    const float getInputPower() const { return model_->getInputPower(); }
-    const float getFloorArea() const { return model_->getFloorArea(); }
+    float getBuildingTemperature() const { return model_->getBuildingTemperature(); }
+    float getOutsideTemperature() const { return model_->getOutsideTemperature(); }
+    float getInputPower() const { return model_->getInputPower(); }
+    float getFloorArea() const { return model_->getFloorArea(); }
     void setOutsideTemperature(float mean, float range);
-    void updateModel(float dt, float time_of_day);
+    void updateModel(float dt, timeOfDay tod);
+
 
 
 

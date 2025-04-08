@@ -27,8 +27,8 @@ private:
     int day_of_year; // Day of the year (1-365)
     
     // Constants
-    const float STEFAN_BOLTZMANN_CONSTANT = 5.67e-8; // W/m^2/K^4
-    const float SOLAR_CONSTANT = 1367; // W/m^2
+    float STEFAN_BOLTZMANN_CONSTANT = 5.67e-8; // W/m^2/K^4
+    float SOLAR_CONSTANT = 1367; // W/m^2
 
     // Helper functions
     float calculate_solar_radiation(float latitude, int day_of_year);
