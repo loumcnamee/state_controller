@@ -25,8 +25,8 @@ void HomeHeatModel::compute_temperature(float dt)
     const float a = 1.0; //0.96;
     const float b = -273.0; //0.91;
     const float x1 = 0.15;
-    const float x2 = 1.12;
-    const float x3 = -0.85;
+    //const float x2 = 1.12;
+    //const float x3 = -0.85;
     const float U = 0.35; // Heat loss coefficient [kW/K] determione teh rate of heat exchange betweej inside and outside
     // P = heating power
     const float C = 0.1/60;  //heat capacity}
