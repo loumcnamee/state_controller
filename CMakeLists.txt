@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 
-project(cmake_template VERSION 0.1.0 LANGUAGES C CXX)
+project(State_Controller VERSION 0.1.0 LANGUAGES C CXX)
 
 #add_compile_options("$<$<COMPILE_LANGUAGE:CXX>: -DGLIBCXX_ASSERTIONS>")
 
