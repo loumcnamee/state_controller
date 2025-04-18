@@ -29,7 +29,7 @@ using State = variant<IdleState, HeatingState, CoolingState>;
 /* ------------------------------- Transitions ---------------------------------------- */
 struct Transitions {
     optional<State> operator()(IdleState &, const EventStop &) {
-        cout << "Idle -> Idle" << endl;
+        std::cout << "Idle -> Idle" << endl;
         return IdleState{};
     }
 
