@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.8)
 
+# include CTest support
+#include(CTest)
+
 # Find includes in the build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 #set (CMAKE_PREFIX_PATH "C:/msys64/ucrt64/qt5-static/lib/cmake")
@@ -34,9 +37,13 @@ find_package(Qt6 COMPONENTS REQUIRED Core Gui Widgets Charts)
 # Tell CMake to create the helloworld executable
 add_executable(theApp theApp.cpp MainWindow.cpp ControlSlider.cpp)
 target_compile_features(theApp PRIVATE cxx_std_17)
+#target_compile_options(theApp PRIVATE -coverage)
+#target_link_options(theApp PRIVATE -coverage)
 
 # Add the Qt5 Widgets for linking
 # Link the executable to the Hello library. Since the Hello library has
 # public include directories we will use those link directories when building
 # the application
 target_link_libraries (theApp  PRIVATE Qt6::Core Qt6::Widgets Qt6::Gui Qt6::Charts libController)
+
+#add_test(NAME coverage COMMAND theApp)
