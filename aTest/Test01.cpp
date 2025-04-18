@@ -114,11 +114,13 @@ TEST(ControllerTests, SetOusideTempTest) {
     
   ASSERT_EQ(ctrl.getStateName(),"Idle");
   
-  ASSERT_EQ(ctrl.getOutsideTemperature(), 0.0f);
+  ASSERT_EQ(ctrl.getOutsideTemperature(), 0.0F);
   
-  ctrl.setOutsideTemperature(101.5f, 0.0f);
+  const float outsideTemp = 101.5F;
+  const float tempRange = 0.0F;
+  ctrl.setOutsideTemperature(outsideTemp, tempRange);
 
-  ASSERT_EQ(ctrl.getOutsideTemperature(), 101.5f);
+  ASSERT_EQ(ctrl.getOutsideTemperature(), outsideTemp);
   
 }
 
