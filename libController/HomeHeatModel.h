@@ -39,13 +39,13 @@ private:
 public:
     HomeHeatModel();
     HomeHeatModel(float heat_mass_capacity, float heat_transmission, float maximum_cooling_power, float maximum_heating_power, float initial_building_temperature, float time_step_size, float conditioned_floor_area);
-    ~HomeHeatModel() = default;
-    void compute_temperature(float dt);
+    
+    void compute_temperature(float timeSpanSeconds);
     void setOutisdeTemperature(float temp);
-    const float getOutsideTemperature() const;
-    const float getBuildingTemperature() const;
-    const float getInputPower() const;
-    const float getFloorArea() const;
+    float getOutsideTemperature() const;
+    float getBuildingTemperature() const;
+    float getInputPower() const;
+    float getFloorArea() const;
     void setInputPower(float power);
     
 

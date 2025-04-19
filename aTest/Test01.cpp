@@ -6,7 +6,6 @@
 #include "HeatingState.h"
 
 
-
 // Test state of controller once constructed
 TEST(ControllerTests, ConstructorTest) {
 
@@ -100,21 +99,25 @@ TEST(ControllerTests, TempDataTest) {
     
   ASSERT_EQ(ctrl.getStateName(),"Idle");
 
-  ASSERT_EQ(ctrl.getBuildingTemperature(), 22.0F);
-  ASSERT_EQ(ctrl.getOutsideTemperature(), 0.0F);
-  ASSERT_EQ(ctrl.getInputPower(), 0.0F);
-  ASSERT_EQ(ctrl.getFloorArea(), 100.0F); 
+  ASSERT_FLOAT_EQ(ctrl.getBuildingTemperature(), 22.0F);
+  ASSERT_FLOAT_EQ(ctrl.getOutsideTemperature(), 0.0F);
+  ASSERT_FLOAT_EQ(ctrl.getInputPower(), 0.0F);
+  ASSERT_FLOAT_EQ(ctrl.getFloorArea(), 100.0F); 
   
 }
 
 // Test controller model to set outside temperature
 TEST(ControllerTests, SetOusideTempTest) {
 
+  const float insideTemp = 22.0F;
+  const float initialOutsideTemp = 0.0F;
+  const float powerOff = 0.0F;
+  
   Controller<State, Event, Transitions> ctrl;
     
   ASSERT_EQ(ctrl.getStateName(),"Idle");
   
-  ASSERT_EQ(ctrl.getOutsideTemperature(), 0.0F);
+  ASSERT_EQ(ctrl.getOutsideTemperature(), initialOutsideTemp);
   
   const float outsideTemp = 101.5F;
   const float tempRange = 0.0F;
@@ -124,7 +127,7 @@ TEST(ControllerTests, SetOusideTempTest) {
   
 }
 
-// Test controller verify building cools when outside temp is less than outside temp and heater is ff
+// Test controller to verify building cools when outside temp is less than outside temp and heater is off
 TEST(ControllerTests, NaturalCoolingTest) {
 
   Controller<State, Event, Transitions> ctrl;
@@ -137,34 +140,42 @@ TEST(ControllerTests, NaturalCoolingTest) {
   //ctrl.process(EventTooCold{});
 
   //ASSERT_EQ(ctrl.getStateName(),"Heating");
-
+  const float insideTemp = 22.0F;
+  const float powerOff = 0.0F;
   ctrl.updateModel(1,timeOfDay(0.0F));
   ASSERT_EQ(ctrl.getStateName(),"Idle");
-  ASSERT_LT(ctrl.getBuildingTemperature(), 22.0F);
+  ASSERT_LT(ctrl.getBuildingTemperature(), insideTemp);
   
-  ASSERT_EQ(ctrl.getInputPower(), 0.0F);
+  ASSERT_EQ(ctrl.getInputPower(), powerOff);
   
 }
 
 // Test controller verify building heats when outside temp is greater than outside temp and cooling is off
 TEST(ControllerTests, NaturalHeatingTest) {
 
+  const float insideTemp = 22.0F;
+  const float powerOff = 0.0F;
+
   Controller<State, Event, Transitions> ctrl;
       
   ASSERT_EQ(ctrl.getStateName(),"Idle");
-  ASSERT_EQ(ctrl.getBuildingTemperature(), 22.0F);
-  ASSERT_EQ(ctrl.getOutsideTemperature(), 0.0F);
-  ASSERT_EQ(ctrl.getInputPower(), 0.0F);
+  ASSERT_FLOAT_EQ(ctrl.getBuildingTemperature(), insideTemp);
+  ASSERT_FLOAT_EQ(ctrl.getOutsideTemperature(), 0.0F);
+  ASSERT_FLOAT_EQ(ctrl.getInputPower(), powerOff);
 
-  ctrl.setOutsideTemperature(30.0F, 0.0F);
-  ASSERT_EQ(ctrl.getOutsideTemperature(), 30.0f);
+  const float outsideTemp = 30.0F;
+  const float tempRange = 0.0F;
+  ctrl.setOutsideTemperature(outsideTemp, tempRange);
+  
+  ASSERT_FLOAT_EQ(ctrl.getOutsideTemperature(), outsideTemp);
 
-    
-  ctrl.updateModel(60*60*12,timeOfDay(0.0F));
+  const float timeDelta = 60*60*12;
+  const float midnight = 0.0F;
+  ctrl.updateModel(timeDelta, timeOfDay(midnight));
   ASSERT_EQ(ctrl.getStateName(),"Idle");
   ASSERT_GT(ctrl.getBuildingTemperature(), 22.0F);
   
-  ASSERT_EQ(ctrl.getInputPower(), 0.0F);
+  ASSERT_FLOAT_EQ(ctrl.getInputPower(), 0.0F);
 
   
 }

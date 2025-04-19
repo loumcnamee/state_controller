@@ -20,23 +20,24 @@
 class DiurnalSurfaceTemperatureModel
 {
 private:
-    float daily_mean_temp ;
-    float daily_temp_range;    
     float time_of_day; // Time of day in hours
-    float latitude; // Latitude in degrees
     int day_of_year; // Day of the year (1-365)
+    float latitude; // Latitude in degrees
+    // Model parameters    
+    float daily_mean_temp ; // Mean daily temperature in Celsius (max + min)/2
+    float daily_temp_range;     // Daily temperature range in Celsius
     
-    // Constants
-    float STEFAN_BOLTZMANN_CONSTANT = 5.67e-8; // W/m^2/K^4
-    float SOLAR_CONSTANT = 1367; // W/m^2
-
+    float outside_temp; // Outside temperature in Celsius
+    
+    
+    
     // Helper functions
     float calculate_solar_radiation(float latitude, int day_of_year);
     float calculate_day_length(float latitude, int day_of_year);
 
 public:
     DiurnalSurfaceTemperatureModel();
-    ~DiurnalSurfaceTemperatureModel() = default;
+    
 
     // Accessors
     float getTimeOfDayHours() const { return time_of_day; }
@@ -52,7 +53,7 @@ public:
     */
     void setTimeOfDayHours(float tod);
 
-    void setOutsideTemperature(float meanTeamp, float tempRange);
+    void setOutsideTemperature(float meanTemp, float tempRange) ;
 
     /**
     * @brief Sets the latitude value and ensures it's within valid range (-90 to 90 degrees)
@@ -61,7 +62,6 @@ public:
     */
     void setLatitude(float lat);
 
-    float compute_surface_temperature(float tod);
+    float compute_surface_temperature(float tod) const;
 };
-
-#endif
+#endif // DIURANAL_SURFACE_TEMP_MODEL_H

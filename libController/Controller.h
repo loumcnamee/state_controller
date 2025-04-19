@@ -14,58 +14,66 @@
 #include "IdleState.h"
 #include "Event.h"
 #include "DiurnalSurfaceModel.h"
+#include "constants.h"
+//using std::variant;
+// using std::optional;
+//using std::cout;
+//using std::endl;
+// using std::move;
+// using std::string;
 
-using namespace std;
+
 
 //template <typename StateVariant, typename EventVariant, typename Transitions>
 struct timeOfDay {
     float hours;  // 0-24 hours
-    explicit timeOfDay(float h) : hours(std::clamp(h, 0.0f, 24.0f)) {}
-    operator float() const { return hours; }
+    
+    explicit timeOfDay(float hour) : hours(std::clamp(hour, 0.0F, physical_constants::hoursPerDay)) {}
+    explicit operator float() const { return hours; }
 };
 
-using State = variant<IdleState, HeatingState, CoolingState>;
+using State = std::variant<IdleState, HeatingState, CoolingState>;
 
 /* ------------------------------- Transitions ---------------------------------------- */
 struct Transitions {
-    optional<State> operator()(IdleState &, const EventStop &) {
-        std::cout << "Idle -> Idle" << endl;
+    std::optional<State> operator()(IdleState & state, const EventStop & event) {
+        std::cout << "Idle -> Idle" << std::endl;
         return IdleState{};
     }
 
-    optional<State> operator()(IdleState &, const EventTooHot &) {
-        cout << "Idle -> Cooling" << endl;
+    std::optional<State> operator()(IdleState & state, const EventTooHot &event) {
+        std::cout << "Idle -> Cooling" << std::endl;
         return CoolingState{};
     }
 
-    optional<State> operator()(IdleState &, const EventTooCold &) {
-        cout << "Idle -> Heating" << endl;
+    std::optional<State> operator()(IdleState & state, const EventTooCold &event) {
+        std::cout << "Idle -> Heating" << std::endl;
         return HeatingState{};
     }
 
-    optional<State> operator()(HeatingState &s, const EventTooCold &) {
-        cout << "Heating -> Heating" << endl;
+    std::optional<State> operator()(HeatingState &state, const EventTooCold &event) {
+        std::cout << "Heating -> Heating" << std::endl;
         return HeatingState{};
     }
 
-    optional<State> operator()(CoolingState &s, const EventTooHot &) {
-        cout << "Cooling -> Cooling" << endl;
+    std::optional<State> operator()(CoolingState &state, const EventTooHot &event) {
+        std::cout << "Cooling -> Cooling" << std::endl;
         return CoolingState{};
     }
 
-    optional<State> operator()(CoolingState &, const EventStop &) {
-        cout << "Cooling -> Idle" << endl;
+    std::optional<State> operator()(CoolingState &state, const EventStop &event) {
+        std::cout << "Cooling -> Idle" << std::endl;
         return IdleState{};
     }
 
-    optional<State> operator()(HeatingState &, const EventStop &) {
-        cout << "Heating -> Idle" << endl;
+    std::optional<State> operator()(HeatingState & state, const EventStop & event) {
+        std::cout << "Heating -> Idle" << std::endl;
         return IdleState{};
     }
     
     template <typename State_t, typename Event_t>
-    optional<State> operator()(State_t &, const Event_t &) const {
-        cout << "Unkown" << endl;
+    std::optional<State> operator()(State_t & state, const Event_t & event) const {
+        std::cout << "Unkown" << std::endl;
         return IdleState{};
     }
 };
@@ -85,7 +93,7 @@ private:
 public:
     Controller();
     template <typename... Events>
-    void process(Events... e) { (dispatch(e), ...); }
+    void process(Events... event) { (dispatch(event), ...); }
  
 
     std::string getStateName() const;
@@ -95,11 +103,7 @@ public:
     float getInputPower() const { return model_->getInputPower(); }
     float getFloorArea() const { return model_->getFloorArea(); }
     void setOutsideTemperature(float mean, float range);
-    void updateModel(float dt, timeOfDay tod);
-
-
-
-
+    void updateModel(float timeSpanSeconds, timeOfDay tod);
     
 };
 

@@ -3,7 +3,11 @@
 #include "CoolingState.h"
 #include "IdleState.h"
 
-using namespace::std;
+using std::optional;
+using std::unique_ptr;
+using std::variant;
+using std::visit;
+using std::string;
 
 template class Controller<std::variant<IdleState, HeatingState, CoolingState>, std::variant<EventStart, EventTooHot, EventTooCold, EventStop>, Transitions>;
 
@@ -36,10 +40,10 @@ void Controller<StateVariant, EventVariant, Transitions>::dispatch(const EventVa
 
     //template std::variant<IdleState, HeatingState, CoolingState>::name();
 template <typename StateVariant, typename EventVariant, typename Transitions>
-void Controller<StateVariant, EventVariant, Transitions>::updateModel(float dTimeSec, timeOfDay tod) {
+void Controller<StateVariant, EventVariant, Transitions>::updateModel(float timeSpanSeconds, timeOfDay tod) {
     float outside_temp = surfaceTempModel_->compute_surface_temperature(static_cast<float>(tod));
     model_->setOutisdeTemperature(outside_temp);
-    model_->compute_temperature(dTimeSec);
+    model_->compute_temperature(timeSpanSeconds);
     
 }
 

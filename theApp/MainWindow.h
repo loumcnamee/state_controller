@@ -27,7 +27,7 @@
 
 
 
-using State = variant<IdleState, HeatingState, CoolingState>;
+using State = std::variant<IdleState, HeatingState, CoolingState>;
 
 class MainWindow : public QMainWindow
 {
