@@ -1,11 +1,9 @@
 #include "HeatingState.h"
+#include "constants.h"
 
 HeatingState::HeatingState() : IState{"Heating"}
 {
-    setPower(1.0f);
+    setPower(model_defaults::defaultPower);
 
 }
 
-const std::string& HeatingState::name() const {
-    return name_;
-}

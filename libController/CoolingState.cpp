@@ -2,12 +2,10 @@
 
 CoolingState::CoolingState() : IState{"Cooling"}
 {
-    setPower(-1.0f);
+    setPower(-1.0F);
 }
 
-const std::string& CoolingState::name() const {
-    return name_;
-}
+
 
 
 

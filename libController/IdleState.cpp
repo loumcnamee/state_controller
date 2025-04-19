@@ -1,10 +1,8 @@
 #include "IdleState.h"
+#include "constants.h"
 
 IdleState::IdleState() : IState{"Idle"}
 {
-    setPower(0.0f);
+    setPower(model_defaults::initialInputPower);
 }
 
-const std::string& IdleState::name() const {
-    return name_;
-}

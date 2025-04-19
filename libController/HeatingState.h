@@ -7,8 +7,6 @@
 class HeatingState : public IState {
 public:
     HeatingState();
-    ~HeatingState() = default;
-    const std::string& name() const;
   
 };
 

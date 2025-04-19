@@ -8,12 +8,12 @@ class CoolingState : public IState {
 
     public:
         CoolingState();
-        ~CoolingState() = default;
+        
         //CoolingState(const CoolingState &other) = default;
         //CoolingState(CoolingState &&other) = default;
         //CoolingState &operator=(const CoolingState &other) = default;
         //CoolingState &operator=(CoolingState &&other) = default;
-        const std::string& name() const;
+
     
 };
 
