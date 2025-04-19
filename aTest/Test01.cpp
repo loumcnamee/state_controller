@@ -4,7 +4,7 @@
 #include "Event.h"
 #include "State.h"
 #include "HeatingState.h"
-
+#include "constants.h"
 
 // Test state of controller once constructed
 TEST(ControllerTests, ConstructorTest) {
@@ -100,7 +100,7 @@ TEST(ControllerTests, TempDataTest) {
   ASSERT_EQ(ctrl.getStateName(),"Idle");
 
   ASSERT_FLOAT_EQ(ctrl.getBuildingTemperature(), 22.0F);
-  ASSERT_FLOAT_EQ(ctrl.getOutsideTemperature(), 0.0F);
+  ASSERT_FLOAT_EQ(ctrl.getOutsideTemperature(), model_defaults::initial_daily_mean_temp);
   ASSERT_FLOAT_EQ(ctrl.getInputPower(), 0.0F);
   ASSERT_FLOAT_EQ(ctrl.getFloorArea(), 100.0F); 
   
@@ -117,7 +117,7 @@ TEST(ControllerTests, SetOusideTempTest) {
     
   ASSERT_EQ(ctrl.getStateName(),"Idle");
   
-  ASSERT_EQ(ctrl.getOutsideTemperature(), initialOutsideTemp);
+  ASSERT_EQ(ctrl.getOutsideTemperature(),  model_defaults::initial_daily_mean_temp);
   
   const float outsideTemp = 101.5F;
   const float tempRange = 0.0F;
@@ -130,7 +130,10 @@ TEST(ControllerTests, SetOusideTempTest) {
 // Test controller to verify building cools when outside temp is less than outside temp and heater is off
 TEST(ControllerTests, NaturalCoolingTest) {
 
+  // statrt with the hosue at 22 C and the outside temp at 0 C
+  // and the heater off
   Controller<State, Event, Transitions> ctrl;
+  ctrl.setOutsideTemperature(0.0F, 0.0F);
     
   ASSERT_EQ(ctrl.getStateName(),"Idle");
   ASSERT_EQ(ctrl.getBuildingTemperature(), 22.0F);
@@ -139,10 +142,11 @@ TEST(ControllerTests, NaturalCoolingTest) {
 
   //ctrl.process(EventTooCold{});
 
+  // expect the house to cool after a minute
   //ASSERT_EQ(ctrl.getStateName(),"Heating");
   const float insideTemp = 22.0F;
   const float powerOff = 0.0F;
-  ctrl.updateModel(1,timeOfDay(0.0F));
+  ctrl.updateModel(60,timeOfDay(0.0F)); // wait 1 minut for th house too cool down
   ASSERT_EQ(ctrl.getStateName(),"Idle");
   ASSERT_LT(ctrl.getBuildingTemperature(), insideTemp);
   
@@ -160,7 +164,7 @@ TEST(ControllerTests, NaturalHeatingTest) {
       
   ASSERT_EQ(ctrl.getStateName(),"Idle");
   ASSERT_FLOAT_EQ(ctrl.getBuildingTemperature(), insideTemp);
-  ASSERT_FLOAT_EQ(ctrl.getOutsideTemperature(), 0.0F);
+  ASSERT_FLOAT_EQ(ctrl.getOutsideTemperature(),  model_defaults::initial_daily_mean_temp);
   ASSERT_FLOAT_EQ(ctrl.getInputPower(), powerOff);
 
   const float outsideTemp = 30.0F;
