@@ -46,7 +46,7 @@ void DiurnalSurfaceTemperatureModel::setDayOfYear(int day) {
         throw std::invalid_argument("Day must be a positive integer");
     }
     
-    day_of_year = (day % physical_constants::maxDayOfYear) + 1; // Ensure day is within 1-365 range
+    day_of_year = (day % physical_constants::maxDayOfYear); // Ensure day is within 1-365 range
     
 }
 
