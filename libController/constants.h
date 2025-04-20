@@ -18,7 +18,7 @@ namespace physical_constants {
     constexpr float absolute_zero = -273.15F; // Celsius
  
   
-} // namespace constants
+} // namespace physical_constants
 
 // Constants used for the model defaults
 namespace model_defaults {
