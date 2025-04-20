@@ -6,10 +6,6 @@ Inspired by https://vishalchovatiya.com/posts//state-design-pattern-in-modern-cp
 This repository contains a C++ application using CMake for the build system.
 It includes support to build a static library containing business logic classes, a google test project that test the library and an application that uses the library classes and provides a Qt GUI.
 
-[![codecov](https://codecov.io/gh/loumcnamee/state_controller/graph/badge.svg?token=OIVEPE6RYE)](https://codecov.io/gh/loumcnamee/state_controller)
-
-[![Build status](https://ci.appveyor.com/api/projects/status/yxoqmvvgh04mxvp3?svg=true)](https://ci.appveyor.com/project/loumcnamee/state-controller)
-
 ## Organization
 
 ### Folder structure
